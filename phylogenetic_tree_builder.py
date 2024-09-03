@@ -15,7 +15,10 @@ st.write("Created by Ahmed Saif")
 uploaded_file = st.file_uploader("Choose a FASTA file", type="fasta")
 
 if uploaded_file is not None:
-    sequences = list(SeqIO.parse(uploaded_file, "fasta"))
+    # Decode the uploaded file from binary to text mode
+    fasta_text = StringIO(uploaded_file.getvalue().decode("utf-8"))
+    
+    sequences = list(SeqIO.parse(fasta_text, "fasta"))
 
     if len(sequences) > 1:
         # Simulate sequence alignment for this simple implementation
