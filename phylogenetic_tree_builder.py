@@ -57,7 +57,8 @@ if uploaded_file is not None:
 
         # Display the tree using matplotlib
         fig = plt.figure(figsize=(10, 6))
-        Phylo.draw(tree, do_show=False)
+        ax = fig.add_subplot(1, 1, 1)
+        Phylo.draw(tree, ax=ax)
         st.pyplot(fig)
 
         # Download option for the tree in Newick format
