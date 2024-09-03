@@ -3,21 +3,26 @@ from Bio import Phylo, SeqIO
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor, DistanceCalculator
 from Bio.Align import MultipleSeqAlignment
 from Bio.Align import PairwiseAligner
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 from io import StringIO
 import matplotlib.pyplot as plt
 
-# Function to perform pairwise sequence alignment
+# Function to perform pairwise sequence alignment and convert to SeqRecord
 def align_sequences(sequences):
     aligner = PairwiseAligner()
     aligner.mode = 'global'
-    alignments = []
     
-    # Align each sequence to the first one in the list
+    # Reference sequence for alignment
     ref_seq = sequences[0]
-    aligned_sequences = [ref_seq]
-    for seq in sequences[1:]:
+    aligned_sequences = []
+    
+    # Align each sequence to the reference sequence
+    for seq in sequences:
         alignment = aligner.align(ref_seq.seq, seq.seq)[0]
-        aligned_sequences.append(alignment)
+        aligned_seq = SeqRecord(Seq(str(alignment.target)), id=seq.id)
+        aligned_sequences.append(aligned_seq)
+    
     return aligned_sequences
 
 # Title and description
