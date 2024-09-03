@@ -7,6 +7,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from io import StringIO
 import matplotlib.pyplot as plt
+import os
 
 # Function to perform pairwise sequence alignment and convert to SeqRecord
 def align_sequences(sequences):
@@ -55,11 +56,17 @@ if uploaded_file is not None:
         constructor = DistanceTreeConstructor()
         tree = constructor.nj(distance_matrix)
 
-        # Display the tree using matplotlib
+        # Generate tree visualization as an image file
         fig = plt.figure(figsize=(10, 6))
         ax = fig.add_subplot(1, 1, 1)
-        Phylo.draw(tree, ax=ax)
-        st.pyplot(fig)
+        Phylo.draw(tree, do_show=False, axes=ax)
+        
+        # Save tree image to a file
+        image_path = "phylogenetic_tree.png"
+        fig.savefig(image_path)
+
+        # Display the image in Streamlit
+        st.image(image_path, caption="Phylogenetic Tree", use_column_width=True)
 
         # Download option for the tree in Newick format
         newick_str = StringIO()
@@ -68,6 +75,10 @@ if uploaded_file is not None:
                            data=newick_str.getvalue(), 
                            file_name="phylogenetic_tree.newick",
                            mime="text/plain")
+        
+        # Clean up the saved image file
+        os.remove(image_path)
+
     else:
         st.error("Please upload a FASTA file with more than one sequence.")
 else:
