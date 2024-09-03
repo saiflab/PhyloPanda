@@ -1,19 +1,24 @@
 import streamlit as st
-from Bio import Phylo
+from Bio import Phylo, SeqIO
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor, DistanceCalculator
-from Bio import AlignIO, SeqIO
 from Bio.Align import MultipleSeqAlignment
+from Bio.Align import PairwiseAligner
 from io import StringIO
 import matplotlib.pyplot as plt
-import numpy as np
 
-# Function to pad sequences to the same length
-def pad_sequences(sequences):
-    max_len = max(len(record.seq) for record in sequences)
-    for record in sequences:
-        if len(record.seq) < max_len:
-            record.seq = record.seq + "-" * (max_len - len(record.seq))
-    return sequences
+# Function to perform pairwise sequence alignment
+def align_sequences(sequences):
+    aligner = PairwiseAligner()
+    aligner.mode = 'global'
+    alignments = []
+    
+    # Align each sequence to the first one in the list
+    ref_seq = sequences[0]
+    aligned_sequences = [ref_seq]
+    for seq in sequences[1:]:
+        alignment = aligner.align(ref_seq.seq, seq.seq)[0]
+        aligned_sequences.append(alignment)
+    return aligned_sequences
 
 # Title and description
 st.title("Simple Phylogenetic Tree Builder")
@@ -31,11 +36,11 @@ if uploaded_file is not None:
     sequences = list(SeqIO.parse(fasta_text, "fasta"))
 
     if len(sequences) > 1:
-        # Pad sequences to the same length (simulating alignment)
-        sequences = pad_sequences(sequences)
+        # Align sequences using pairwise aligner
+        aligned_sequences = align_sequences(sequences)
 
         # Create a MultipleSeqAlignment object
-        alignment = MultipleSeqAlignment(sequences)
+        alignment = MultipleSeqAlignment(aligned_sequences)
 
         # Calculate the distance matrix based on sequence identity
         calculator = DistanceCalculator('identity')
