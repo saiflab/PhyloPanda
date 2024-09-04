@@ -9,6 +9,43 @@ from io import StringIO
 import matplotlib.pyplot as plt
 import os
 
+# Apply custom CSS for theming
+st.markdown("""
+    <style>
+        body {
+            background-color: #f0f0f0; /* Light grey background */
+        }
+        .title {
+            color: #1f77b4; /* Blue color for the title */
+        }
+        .header {
+            background-color: #ffffff; /* White background for the header */
+            padding: 20px;
+            border-bottom: 3px solid #1f77b4; /* Blue bottom border for the header */
+        }
+        .subheader {
+            color: #ff7f0e; /* Orange color for subheaders */
+        }
+        .text-area {
+            border: 2px solid #1f77b4; /* Blue border for text areas */
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            color: #888888; /* Grey color for the footer */
+        }
+        .table {
+            background-color: #ffffff; /* White background for tables */
+            border-radius: 5px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Add a full-width logo at the top
+logo = "logo.jpg"
+st.image(logo, use_column_width=True)  # Logo spans the full width of the column
+
+
 # Function to perform pairwise sequence alignment and convert to SeqRecord
 def align_sequences(sequences):
     aligner = PairwiseAligner()
