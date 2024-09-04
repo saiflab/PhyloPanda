@@ -66,7 +66,7 @@ def align_sequences(sequences):
 # Title and description
 st.title("Simple Phylogenetic Tree Builder")
 st.write("Upload a DNA FASTA file to generate a phylogenetic tree.")
-st.write("Created by Ahmed Saif")
+st.write("**Created by Ahmed Saif**")
 
 # Upload FASTA file
 uploaded_file = st.file_uploader("Choose a FASTA file", type="fasta")
