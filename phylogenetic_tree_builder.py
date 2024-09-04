@@ -64,7 +64,7 @@ def align_sequences(sequences):
     return aligned_sequences
 
 # Title and description
-st.title("Simple Phylogenetic Tree Builder")
+st.title("Phylogenetic Tree Builder")
 st.write("Upload a DNA FASTA file to generate a phylogenetic tree.")
 st.write("Created by Ahmed Saif")
 
